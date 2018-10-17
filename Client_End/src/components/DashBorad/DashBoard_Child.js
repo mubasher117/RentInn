@@ -4,10 +4,12 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { Tabs, Tab } from '@material-ui/core';
+import { Tabs, Tab, Toolbar } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import ClippedDrawer from './Drawer';
+import Artboard from '../Images/Artboard.jpg'
 import SwipeableTextMobileStepper from './Stepper';
+
 const tutorialSteps = [
   {
     imgPath:
@@ -33,22 +35,11 @@ const tutorialSteps = [
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#F0F0F7',
-      main: '#707070',
-      dark: '#002884',
-      contrastText: '#fff',
+      main: '#e3f2fd',
     },
-
     secondary: {
-      light: '#F0F0F7',
-      main: '#6A1B9A',
-
-      dark: '#333366',
-      contrastText: '#F0F0F7',
+      main: '#fce4ec',
     },
-    fontcolor: {
-      main: '#FAFAFA',
-    }
   },
 
 });
@@ -77,10 +68,11 @@ const styles = {
     font: 'Arial Bold',
   },
   pap: {
-    zIndex: -1
+    height: 60
   }, img: {
     width: '100%',
     height: "75%",
+    backgroundImage: `url(${Artboard})`,
     backgroundSize: 'cover',
     backkgroundRepeat: 'no-repeat',
     paddingBottom: '3%'
@@ -103,22 +95,23 @@ class DashBoard extends React.Component {
     this.setState({ value });
   };
   render() {
-    
+
     const { classes } = this.props;
     const { value } = this.state;
     return (
       <MuiThemeProvider>
         <Grid container >
           <Grid item>
-            <AppBar position="absolute" className={classes.pap} color="primary">
-              <Tabs value={value} indicatorColor="primary"  onChange={this.handleChange}>
-                <Tab position='center' label="Rent Inn" />
-              </Tabs>
-              {value == 0}
+            <AppBar position="absolute" className={classes.pap}  lg={12}>
+            <Toolbar>
+              <Typography style={{ color: 'white',marginLeft:'3%' }} variant='headline'>Rent Inn </Typography>
+              <Button onClick={this.props.handleSeller} style={{marginLeft:'70%'}}> Rent Now</Button>
+              <Button onClick={this.props.handleSeller} style={{marginLeft:'3%'}}> Login</Button>
+              </Toolbar>
             </AppBar>
           </Grid>
-          <Grid item style={{marginTop:'4%'}}><SwipeableTextMobileStepper tutorialSteps={tutorialSteps}/></Grid>
-          <ClippedDrawer/>
+          <Grid item style={{ marginTop: '4%' }}><SwipeableTextMobileStepper tutorialSteps={tutorialSteps} /></Grid>
+          <ClippedDrawer />
         </Grid>
       </MuiThemeProvider>
     )
