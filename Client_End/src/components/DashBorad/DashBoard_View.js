@@ -17,13 +17,17 @@ const mapDispatchToProps = (dispatch) => {
 class LoginView extends Component {
   constructor(props) {
     super(props);
+    this.handleSeller=this.handleSeller.bind(this);
+  }
+  handleSeller(){
+    this.props.history.push('/seller');
   }
   getScreen(status) {
     console.log("I am from login Component getScreen: " + status);
     switch (status) {
       case login_Status.login_SignIn.NEW:
         return (
-          <DashBoard handleAdmin={this.handleAdmin}  handleUser={this.props.handleUser}
+          <DashBoard handleAdmin={this.handleAdmin} handleSeller={this.handleSeller}  handleUser={this.props.handleUser}
           />);
         break;
       

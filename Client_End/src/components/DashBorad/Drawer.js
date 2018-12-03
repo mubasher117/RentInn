@@ -8,11 +8,12 @@ import Select from '@material-ui/core/Select';
 import Divider from '@material-ui/core/Divider';
 import { Button, Grid } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem'
-
+import Details from './Details';
 import { Tabs, Tab } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import ImgMediaCard from './rentCard';
 import autoPlay from 'react-swipeable-views-utils/lib/autoPlay';
+import Maps from './Maps';
 const styles = theme => ({
     root: {
         flexGrow: 1,
@@ -46,10 +47,10 @@ class ClippedDrawer extends React.Component {
     constructor(props) {
         super(props);
         this.state = { value: 0 }
-        this.changePAge=this.changePAge.bind(this);
+        this.changePAge = this.changePAge.bind(this);
     }
-    changePAge(){
-        this.setState({value:2})
+    changePAge() {
+        this.setState({ value: 2 })
     }
     handleChange = (event, value) => {
         this.setState({ value });
@@ -69,6 +70,9 @@ class ClippedDrawer extends React.Component {
                 >
                     <div />
                     <Grid container direction='column' style={{ marginLeft: '4%', marginTop: '4%' }} spacing={16}>
+                        <Grid item>
+                            <Typography variant='headline'>Search</Typography>
+                        </Grid>
                         <Grid item >
                             <Typography><b>Location</b></Typography>
                         </Grid>
@@ -151,9 +155,9 @@ class ClippedDrawer extends React.Component {
                                 <Tab label="Details" />
 
                             </Tabs>
-                            {value == 0 && <ImgMediaCard  changePAge={this.changePAge}/>}
-                            {value == 1 }
-                            {value == 2 }
+                            {value == 0 && <ImgMediaCard changePAge={this.changePAge} />}
+                            {value == 1 && <Maps />}
+                            {value == 2 && <Details />}
                         </AppBar>
                     </div>
                 </main>

@@ -24,9 +24,9 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.default,
   },
   img: {
-    height: 360,
+    height: 300,
     display: 'block',
-    maxWidth: 1600,
+    maxWidth: 1400,
     overflow: 'hidden',
     width: '100%',
   },
