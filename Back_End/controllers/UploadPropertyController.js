@@ -1,5 +1,5 @@
-const UploadProperty = require("../models/UploadedProperty");
-
+const UploadedProperty = require("../models/UploadedProperty");
+const Login = require("../models/Login");
 exports.UploadProperty = (req, res) => {
     Login.findOne({ _id: req.body.OwnerId }, (err, account) => {
         if (err) {
@@ -11,9 +11,11 @@ exports.UploadProperty = (req, res) => {
             res.status(200).send({ 'uploadStatus': 'OwnerNotFound' });
         }
         else {
-            const newProperty = new UploadProperty(req.body);
+            console.log("entered in upload property successfully")
+            const newProperty = new UploadedProperty(req.body);
             newProperty.save((err, property) => {
                 if (err) {
+                    console.log(err)
                     res.status(500).json({ 'PropertyUpload': 'failure', 'err': err });
                 }
                 else {
@@ -32,9 +34,9 @@ exports.UploadProperty = (req, res) => {
 
 
 
-exports.GetUploadedProperty = (req, res) => {
+exports.GetAllUploadedProperties = (req, res) => {
     console.log("got in get uploaded properties")
-    UploadProperty.find({}, (err, properties) => {
+    UploadedProperty.find({}, (err, properties) => {
         if (err) {
             res.status(500).json({ 'PropertyShow': 'Unsuccessful', 'err': err })
         }
@@ -45,8 +47,18 @@ exports.GetUploadedProperty = (req, res) => {
     })
 }
 
+exports.GetSpecificUploadedProperty = (req, res) => {
+    UploadedProperty.find({ _id: req.params.propertyId }, (err, prop) => {
+        if (err) {
+            res.status(500).send({ 'propertyStatus': 'failed', 'err': err })
+        }
+        else {
+            res.status(200).json({ 'propertyStatus': 'found', property: prop })
+        }
+    })
+};
 exports.DeleteUploadedProperty = (req, res) => {
-    UploadProperty.deleteOne({ _id: req.params.id }, (err, property) => {
+    UploadedProperty.deleteOne({ _id: req.body.id }, (err, property) => {
         if (err) {
             res.status(500).send({ 'deleteStatus': 'failed', 'err': err })
         }
@@ -55,4 +67,13 @@ exports.DeleteUploadedProperty = (req, res) => {
         }
     })
 }
-
+exports.DeleteAllUploadedProperties = (req, res) => {
+    UploadedProperty.deleteMany({}, (err,remaining) => {
+        if (err){
+            res.status(500).send({ 'deleteStatus': 'failed', 'err': err })
+        }
+        else{
+            res.status(200).json({ 'deleteStatus': 'success', 'property': remaining })
+        }
+    })
+}

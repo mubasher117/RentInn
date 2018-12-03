@@ -2,7 +2,7 @@ const Login = require("../models/Login");
 
 exports.handleRegister = (req,res) =>{
   
-  Login.findOne({username: req.body.username}, (err, account) => {
+  Login.findOne({name: req.body.name}, (err, account) => {
     if (err)
     {
        console.log("Error in Server " +account)
@@ -22,9 +22,11 @@ exports.handleRegister = (req,res) =>{
           if (err) {
             console.log("failure in creating account",err);
             res.status(500).json({'registerStatus':'failure','err':err});
-          }          else{
+          }    
+          else{
             console.log("account created");
-            res.status(200).json({'registerStatus':'created'});
+            console.log(account);
+            res.status(200).json({'registerStatus':'created',Ownerid:account._id});
           }
       });
 

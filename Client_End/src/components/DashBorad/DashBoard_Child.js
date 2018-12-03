@@ -7,25 +7,30 @@ import Button from '@material-ui/core/Button';
 import { Tabs, Tab, Toolbar } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import ClippedDrawer from './Drawer';
-import Artboard from '../Images/Artboard.jpg'
 import SwipeableTextMobileStepper from './Stepper';
+import Divider from '@material-ui/core/Divider';
+import Footer from './footer.js'
+import { typography } from 'material-ui/styles';
 
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import { PictureServer } from '../../server/PictureServer';
 const tutorialSteps = [
   {
     imgPath:
-      'https://www.lionhdb.com/wp-content/uploads/2018/04/1cd02126-9e76-4a37-a1d5-c02c59193e39-1040x623.jpg',
+      'http://www.whitehouse51.com/pic/3.bp.blogspot.com/-oaG8cxgeHoQ/Un4kPOLX73I/AAAAAAAABpc/X--E-Uf5p6o/s1600/House-+HD-Wallpapers1391117.jpg',
   },
   {
     imgPath:
-      'https://cdn.cnn.com/cnnnext/dam/assets/161205135716-03-karachi-hotel-pakistan-fire-full-169.jpg',
+      'https://i.pinimg.com/originals/a5/67/88/a56788472a77f38b12204034e4aeccde.jpg',
   },
   {
     imgPath:
-      'https://www.aarz.pk/uploads/properties/2017/6/commercial-shops-apartments-for-sale-bahria-civic-center-phase-4-68879-image-1-actual.jpg',
+      'https://i.ytimg.com/vi/gp1R2Gmciq8/maxresdefault.jpg',
   },
   {
     imgPath:
-      'https://i2.wp.com/www.ghar47.com/wp-content/uploads/2018/04/2-Kanal-brand-new-house-for-sale-in-Y-Block-DHA-Phase-3-Lahore-1.jpg?resize=770%2C386&ssl=1',
+      'https://wallpapercave.com/wp/wp2449477.jpg',
   },
   {
     imgPath:
@@ -46,9 +51,14 @@ const theme = createMuiTheme({
 
 const styles = {
   root: {
-    top: '20%',
-    left: '30%',
-    paddingTop: '70px'
+    flexGrow: 1,
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20,
   },
   card: {
     minWidth: 175,
@@ -68,11 +78,10 @@ const styles = {
     font: 'Arial Bold',
   },
   pap: {
-    height: 60
+    height: 60,
   }, img: {
     width: '100%',
     height: "75%",
-    backgroundImage: `url(${Artboard})`,
     backgroundSize: 'cover',
     backkgroundRepeat: 'no-repeat',
     paddingBottom: '3%'
@@ -90,10 +99,11 @@ class DashBoard extends React.Component {
     super(props);
     this.state = { value: '' }
   }
-
   handleChange = (event, value) => {
     this.setState({ value });
   };
+  componentDidMount(){
+  }
   render() {
 
     const { classes } = this.props;
@@ -102,17 +112,24 @@ class DashBoard extends React.Component {
       <MuiThemeProvider>
         <Grid container >
           <Grid item>
-            <AppBar position="absolute" className={classes.pap}  lg={12}>
-            <Toolbar>
-              <Typography style={{ color: 'white',marginLeft:'3%' }} variant='headline'>Rent Inn </Typography>
-              <Button onClick={this.props.handleSeller} style={{marginLeft:'70%'}}> Rent Now</Button>
-              <Button onClick={this.props.handleSeller} style={{marginLeft:'3%'}}> Login</Button>
+            <AppBar color='primary' position="absolute">
+              <Toolbar>
+                <img src={require('../Images/logoK2.gif')} style={{ width: '70px', height: '60px' }} className={classes.menuButton} color="inherit" aria-label="Menu" />
+
+                <Typography onClick={this.props.handleMain} variant="headline" color="inherit" className={classes.grow}>
+                  Rent Inn
+                </Typography>
+                <Button color="secondary" onClick={this.props.handleSeller} style={{ color: 'white', outlineColor: 'white' }} variant='raised'>Rent Now</Button>
+                <Button color="secondary" onClick={this.props.handleLogin} style={{ marginLeft: '1%', color: 'white' }} variant='raised'>Login</Button>
+                <Button onClick = {this.props.CheckServer}>Click Me</Button>
               </Toolbar>
             </AppBar>
           </Grid>
           <Grid item style={{ marginTop: '4%' }}><SwipeableTextMobileStepper tutorialSteps={tutorialSteps} /></Grid>
-          <ClippedDrawer />
+          <ClippedDrawer  properties={this.props.properties} images = {this.props.images}/>
+
         </Grid>
+        <Footer />
       </MuiThemeProvider>
     )
 

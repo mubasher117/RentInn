@@ -2,29 +2,39 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const UploadedProperty = new Schema({
+
     OwnerId : {
-        type: Schema.Types.ObjectId, ref : 'Login'
+        type : Schema.Types.ObjectId, ref : 'Account'
     },
-    Title : {
+    lat: {
+        type: String
+    },
+    lan: {
+        type: String
+    },
+    rent:{
+        type:String
+    },
+    Address: {
+        type: String
+    },
+    PropertyType: {
+        type: String
+    },
+    MainImage: {
         type : String
     },
-    Address : {
-        type : String
+    Bedrooms: {
+        type: Number
     },
-    PropertyType : {
-        type : String
+    Bathrooms: {
+        type: Number
     },
-    Bedrooms : {
-        type : String
+    Garage: {
+        type: Boolean
     },
-    Bathrooms : {
-        type : String
-    },
-    Garage : {
-        type : Boolean
-    },
-    AC : {
-        type : Boolean
+    AC: {
+        type: Boolean
     }
 })
 

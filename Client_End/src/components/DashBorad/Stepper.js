@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import { Typography, Button, GridList, GridListTile, GridListTileBar } from '@material-ui/core';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
+import { Grid } from '@material-ui/core';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 const styles = theme => ({
@@ -24,9 +24,9 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.default,
   },
   img: {
-    height: 300,
+    height: 400,
     display: 'block',
-    maxWidth: 1400,
+    maxWidth: 2000,
     overflow: 'hidden',
     width: '100%',
   },
@@ -60,7 +60,7 @@ class SwipeableTextMobileStepper extends React.Component {
 
     return (
       <div >
-        
+
         <AutoPlaySwipeableViews
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
           index={activeStep}
@@ -70,7 +70,7 @@ class SwipeableTextMobileStepper extends React.Component {
           {this.props.tutorialSteps.map((step, index) => (
             <div key={step.label}>
               {Math.abs(activeStep - index) <= 2 ? (
-                <img className={classes.img} src={step.imgPath} alt={step.label} />
+                    <img className={classes.img} src={step.imgPath} alt={step.label} />
               ) : null}
             </div>
           ))}

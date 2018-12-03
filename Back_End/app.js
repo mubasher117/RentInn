@@ -14,8 +14,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 const UploadPropertyController = require("./controllers/UploadPropertyController")
 const ApprovePropertyController = require("./controllers/ApprovePropertyController")
-
-
+const OrderController = require("./controllers/OrderController")
+const PictureConstroller = require("./controllers/PictureController")
 
 app
   .route("/api/Accounts/SignIn")
@@ -24,20 +24,71 @@ app
 app
   .route("/api/Accounts/Register")
   .post(registerController.handleRegister)
-
+  app 
+  .route("/api/RentINN/GetSpecificUser/:userId")
+  .get(loginController.GetSpecificUser)
+app
+  .route("/api/Accounts/GetAllAcounts")
+  .get(loginController.getAllAccounts)
 app
   .route("/api/RentINN/UploadProperty")
   .post(UploadPropertyController.UploadProperty)
 app 
-  .route("/api/RentINN/GetUploadedProperty")
-  .get(UploadPropertyController.GetUploadedProperty)
+  .route("/api/RentINN/GetAllUploadedProperties")
+  .get(UploadPropertyController.GetAllUploadedProperties)
+app 
+  .route("/api/RentINN/GetSpecificUploadedProperty/:propertyId")
+  .get(UploadPropertyController.GetSpecificUploadedProperty)
+    
 app
-  .route("/api/RentINN/DeleteUploadedProperty/:id")
+  .route("/api/RentINN/DeleteUploadedProperty")
   .delete(UploadPropertyController.DeleteUploadedProperty)
 
 app
-  .route("/api/RentINN/ApproveProperty/:id")
+  .route("/api/RentINN/ApproveProperty")
   .post(ApprovePropertyController.ApproveProperty)
+app 
+  .route("/api/RentINN/GetAllApprovedProperties")
+  .get(ApprovePropertyController.GetAllApprovedProperties)
+app 
+  .route("/api/RentINN/GetSpecificApprovedProperty")
+  .get(ApprovePropertyController.GetSpecificApprovedProperty)
+    
+app
+  .route("/api/RentINN/DeleteApprovedProperty")
+  .delete(ApprovePropertyController.DeleteApprovedProperty)
+
+app 
+  .route("/api/RentINN/MakeOrder")
+  .post(OrderController.MakeOrder)
+app 
+  .route("/api/RentINN/GetAllOrders")
+  .get(OrderController.GetAllOrders)
+app 
+  .route("/api/RentINN/GetSpecificOrder")
+  .get(OrderController.GetSpecificOrder)
+    
+app
+  .route("/api/RentINN/DeleteOrder")
+  .delete(OrderController.DeleteOrder)
+app
+    .route("/api/RentINN/DeleteAllOrders")
+    .delete(OrderController.DeleteAllOrders)
+app
+  .route("/api/RentINN/GetPropertyPictures/:PropertyId")
+  .get(PictureConstroller.GetPropertyImages)
+app 
+  .route("/api/RentINN/AddPicture")
+  .post(PictureConstroller.AddImage)
+
+  app
+  .route("/api/RentINN/GetAllPictures")
+  .get(PictureConstroller.GetAllImages)
+app 
+  .route("/api/RentINN/DeleteAllUploadedProperties")
+  .delete(UploadPropertyController.DeleteAllUploadedProperties)
+
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

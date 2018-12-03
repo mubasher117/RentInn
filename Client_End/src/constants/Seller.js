@@ -1,0 +1,22 @@
+export const seller_Actions = {
+	seller_SignIn: {
+		NEW: "SELLER_ACCOUNT_NEW",
+		SELLER_ID: "SELLER_ID",
+		SELLER_DATA: "SELLER_DATA",
+		SUCCESS: "SUCCESS",
+		EXISTING: "EXISTING_SELLER",
+		LISTING: "LISTING"
+	}
+}
+
+
+export const seller_Status = {
+	seller_SignIn: {
+		NEW: "SELLER_ACCOUNT_NEW",
+		SELLER_ID: "SELLER_ID",
+		SELLER_DATA: "SELLER_DATA",
+		LISTING: "LISTING",
+		SUCCESS: "SUCCESS",
+		EXISTING: "EXISTING_SELLER",
+	}
+}
