@@ -4,7 +4,6 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { withStyles } from '@material-ui/core/styles';
 import Main from '../Images/h2Main.jpg'
 import { Tabs, Tab, Select, MenuItem, Switch, Toolbar, Divider, AppBar, Button, Typography, TextField, Paper } from '@material-ui/core';
-import { Line, Circle } from 'rc-progress';
 import Footer from './footer'
 const theme = createMuiTheme({
     palette: {
@@ -131,7 +130,7 @@ class MainPage extends React.Component {
                             <br />
                             <Grid container spacing={16} alignItems='center' justify='center'>
                                 <Grid item >
-                                    <Typography variant="display1" className={classes.fontC} align="center" style={{ color: '#0284a8', fontFamily: '"Consolas",sans-serif' }}>
+                                    <Typography variant="display1" className={classes.fontC} align="center" style={{ color: 'white', fontFamily: '"Consolas",sans-serif' }}>
                                         Residencial
                                     </Typography>
                                 </Grid>
@@ -145,7 +144,7 @@ class MainPage extends React.Component {
                                 Commercial Properties
                             </Typography>
                             <center >
-                                <Button variant="outlined" onClick={this.props.handleSeller} style={{ color: 'white', backgroundColor: 'black' }} className={classes.button}>
+                                <Button variant="outlined" onClick={this.props.handleSeller} style={{ color: 'white', backgroundColor: '#0284a8' }} className={classes.button}>
                                     Rent Now
                                 </Button>
                                 <Button variant="contained" color="secondary" onClick={this.props.handleHome} className={classes.button}>
@@ -159,7 +158,7 @@ class MainPage extends React.Component {
                 </Grid>
                 <Grid item style={{ marginTop: '3%' }} >
                     <Typography color='secondary' variant="display1" align="center"  >
-                        Our Offerings
+                        Our Offers 
                     </Typography>
                 </Grid>
                 <Grid container lg={11} style={{ marginTop: '3%', marginLeft: '8%' }}>

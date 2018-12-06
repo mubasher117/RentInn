@@ -121,7 +121,7 @@ class DashBoard extends React.Component {
                 </Typography>
                 <Button color="secondary" onClick={this.props.handleSeller} style={{ color: 'white', outlineColor: 'white' }} variant='raised'>Rent Now</Button>
                 <Button color="secondary" onClick={this.props.handleLogin} style={{ marginLeft: '1%', color: 'white' }} variant='raised'>Login</Button>
-                <Button onClick = {this.props.CheckServer}>Click Me</Button>
+                
               </Toolbar>
             </AppBar>
           </Grid>

@@ -155,14 +155,12 @@ class SellerChild extends React.Component {
     handleSubmit() {
         console.log(this.state.url)
         if (this.props.isLogged !== undefined) {
-            this.UploadImages();
             this.props.handleProperty(this.state.lat, this.state.lng, this.state.fullAddres,
                 this.state.PropertyType, this.state.Bedroooms, this.state.bahtrooms,
                 this.state.garage, this.state.ac, this.state.name, this.state.Password,
                 this.state.Email, this.state.phoneNumber, this.state.rent, true, this.state.url)
         }
         else {
-            this.UploadImages();
             this.props.handleProperty(this.state.lat, this.state.lng, this.state.fullAddres,
                 this.state.PropertyType, this.state.Bedroooms, this.state.bahtrooms,
                 this.state.garage, this.state.ac, this.state.name, this.state.Password,
