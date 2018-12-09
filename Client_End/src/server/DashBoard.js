@@ -51,7 +51,7 @@ export function handleAllAccounts() {
                 return;
             }
             else {
-                store.dispatch({ type: login_Actions.login_SignIn.LOGIN, payload: data });
+                store.dispatch({ type: login_Actions.login_SignIn.HOME, payload: data });
                 return;
             }
         });
@@ -72,7 +72,7 @@ export function handleAllProperties() {
                 return;
             }
             else {
-                store.dispatch({ type: login_Actions.login_SignIn.HOME, payload: data });
+                store.dispatch({ type: login_Actions.login_SignIn.ACCOUNTS, payload: data });
                 return;
             }
         });

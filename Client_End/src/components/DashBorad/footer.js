@@ -87,6 +87,7 @@ class Footer extends React.Component {
                     textAlign: 'left',
                     font: 'bold 16px sans-serif',
                     marginTop: '4%',
+
                     padding: '55px 50px',
                 }}>
                     <Grid container style={{maxWidth:'2000px',width:'100%'}}>

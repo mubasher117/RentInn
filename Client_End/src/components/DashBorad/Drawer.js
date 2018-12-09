@@ -61,44 +61,114 @@ const styles = theme => ({
         width: 90 * 2
     },
 });
-
+const punjabSugestions = [
+    { label: 'Taxila' },
+    { label: 'Sialkot' },
+    { label: 'Sargodha' },
+    { label: 'Sahiwal' },
+    { label: 'Rahim Yar Khan' },
+    { label: 'Rawalpindi' },
+    { label: 'Pattoki' },
+    { label: 'Okara' },
+    { label: 'Narowal' },
+    { label: 'Murree' },
+    { label: 'Multan' },
+    { label: 'Mianwali' },
+    { label: 'Mandi Bahauddin' },
+    { label: 'Mailsi' },
+    { label: 'Layyah' },
+    { label: 'Lahore' },
+    { label: 'Kot Adu' },
+    { label: 'Khushab' },
+    { label: 'Khanpur' },
+    { label: 'Khanewal' },
+    { label: 'Kalabagh' },
+    { label: 'Gujrat' },
+    { label: 'Gujranwala' },
+    { label: 'Faisalabad' },
+    { label: 'Dera Ghazi Khan' },
+    { label: 'Chakwal' },
+    { label: 'Bhakkar' },
+    { label: 'Bahawalpur' },
+    { label: 'Bahawalnagar' },
+    { label: 'Attock' },
+    { label: 'Arifwala' },
+    { label: 'Alipur' },
+    { label: 'Raiwind' },
+].map(suggestion => ({
+    value: suggestion.label,
+    label: suggestion.label,
+}));
 class ClippedDrawer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            mobileOpen: false, value: 0, PropertyType: '', Size: ''
+            mobileOpen: false, value: 0, PropertyType: '', Size: '',
+            selcectedProperty: '', properties: this.props.properties,
+            accounts: this.props.accounts, city: '', province: '', cities: [],
+            selectedCity: '', selectedMinPrice : '', selectedMaxPrice: '',
+            selectedPropertyType : '', selectedMinMarla : '' , selectedMaxPrice : ''
+
         };
         this.handleSelect = this.handleSelect.bind(this);
         this.changePAge = this.changePAge.bind(this);
+        this.handleAddress = this.handleAddress.bind(this);
+        this.filter = this.filter.bind(this);
     }
 
-    handleSelect = name => event => {
-        this.setState({ [name]: event.target.value });
+    handleAddress = name => value => {
+        this.setState({ [name]: value.target.value })
+        if (name === 'province') {
+            if (value.target.value === 'Punjab') {
+                this.setState({ cities: punjabSugestions })
+            }
+            else {
+                this.setState({ cities: [] })
+            }
+        }
+        this.setState({selectedCity : value.target.value})
+    };
+    componentWillReceiveProps(props) {
+        this.setState({ properties: props.properties, accounts: props.accounts, sellectedOwner: '' })
+    }
+    handleSelect(name, event) {
+        if (name == 'PropertyType') {
+            this.setState({ PropertyType: event.target.value })
+        }
+        if (name == 'Size') {
+            this.setState({ Size: event.target.value })
+        }
+
     };
 
     handleDrawerToggle = () => {
         this.setState(state => ({ mobileOpen: !state.mobileOpen }));
     };
-    changePAge() {
-        this.setState({ value: 2 })
+    changePAge(row) {
+        this.state.accounts.map((val) => {
+            if (row.OwnerId == val._id) {
+                this.setState({ selcectedProperty: row, sellectedOwner: val, value: 2 })
+            }
+        })
+
     }
     handleChange = (event, value) => {
         this.setState({ value });
     };
-componentDidMount (){
-    
-    
-}
+    filter(){
+        var entities = []
+        var values = []
+        for (var i =0 ; i < this.state.properties.length; ++i){
+            console.log(this.state.properties[i])
+
+        }
+
+    }
     render() {
         const { classes, theme } = this.props;
-
         const { value } = this.state;
-
-
-
         return (
             <div className={classes.root}>
-
                 <Hidden mdUp>
                     <Drawer
                         variant="temporary"
@@ -117,14 +187,46 @@ componentDidMount (){
                                 <Typography variant='headline' style={{ color: 'white' }}>Search</Typography>
                             </Grid>
                             <Grid item >
-                                <Typography><b>Location</b></Typography>
+                                <Typography><b> Select Province</b></Typography>
                             </Grid>
-                            <Grid item>
-                                <TextField
-                                    label="Area/City/Province"
-                                    placeholder="Area/City/Province"
-                                    className={classes.textFieldForm}
-                                />
+                            <Grid item style={{}}>
+                                <Select
+                                    required
+                                    className={classes.PropertyType}
+                                    id='province'
+                                    value={this.state.province}
+                                    onChange={this.handleAddress('province')}
+                                    
+
+                                >
+                                 <MenuItem value={'Punjab'}>Punjab</MenuItem>
+                                    <MenuItem value={'Khaber Pakhton Khawa'}>Khyber Pakhtunkhawa</MenuItem>
+                                    <MenuItem value={'Sindh'}>Sindh</MenuItem>
+                                    <MenuItem value={'Balchistan'}>Balochistan</MenuItem>
+                                   
+                                </Select>
+
+                            </Grid>
+                            <Grid item >
+                                <Typography><b> Select City</b></Typography>
+                            </Grid>
+                            <Grid item style={{}}>
+                                <Select
+                                    required
+                                    className={classes.PropertyType}
+                                    id='city'
+                                    value={this.state.city}
+                                    onChange={this.handleAddress('city')}
+
+                                >
+                                    {
+                                        this.state.cities.map((val) => {
+                                            return (
+                                                <MenuItem value={val.label}>{val.label}</MenuItem>
+                                            )
+                                        })
+                                    }
+                                </Select>
                             </Grid>
                             <Grid item >
                                 <Typography><b>Price</b></Typography>
@@ -143,36 +245,25 @@ componentDidMount (){
                                     />
                                 </Grid>
                             </Grid>
-
                             <Grid item >
                                 <Typography><b>Select Property Type</b></Typography>
                                 <Select className={classes.PropertyType}
                                     placeholder="Property Type"
                                     label="Property Type"
                                     value={this.state.PropertyType}
-                                    onChange={this.handleSelect('PropertyType')}
+                                    onChange={(event) => this.handleSelect('PropertyType', event)}
                                 >
 
-                                    <MenuItem value={10}>House</MenuItem>
-                                    <MenuItem value={20}>Apartment</MenuItem>
-                                    <MenuItem value={30}>Bussiness Commercial</MenuItem>
+                                    <MenuItem value={'House'}>House</MenuItem>
+                                    <MenuItem value={'Apartment'}>Apartment</MenuItem>
+                                    <MenuItem value={'Bussiness Commercial'}>Bussiness Commercial</MenuItem>
                                 </Select>
                             </Grid>
                             <Grid item spacing={16}>
                                 <Typography>
                                     <b>Size</b>
                                 </Typography>
-                                <Select className={classes.PropertyType}
-                                    placeholder="Size"
-                                    label="Size"
-                                    value={this.state.Size}
-                                    onChange={this.handleSelect('Size')}
-                                >
-
-                                    <MenuItem value={10}>Marla</MenuItem>
-                                    <MenuItem value={20}>Sq Feet</MenuItem>
-                                </Select>
-
+                                
                             </Grid>
                             <Grid container item>
                                 <Grid item>
@@ -192,9 +283,9 @@ componentDidMount (){
                                 <Button variant='contained' color='secondary'>Search</Button>
                             </Grid>
                         </Grid>
-
                     </Drawer>
                 </Hidden>
+
                 <Hidden smDown implementation="css">
                     <Drawer
                         variant="permanent"
@@ -208,18 +299,48 @@ componentDidMount (){
                             <Grid item style={{ backgroundColor: '#02bec4' }}>
                                 <Typography variant='headline' style={{ color: 'white' }}>Search</Typography>
                             </Grid>
-
-
                             <Grid item >
-                                <Typography><b>Location</b></Typography>
+                                <Typography><b> Select Province</b></Typography>
                             </Grid>
-                            <Grid item>
-                                <TextField
-                                    label="Area/City/Province"
-                                    placeholder="Area/City/Province"
-                                    className={classes.textFieldForm}
-                                />
+                            <Grid item style={{}}>
+                                <Select
+                                    required
+                                    className={classes.PropertyType}
+                                    id='province'
+                                    value={this.state.province}
+                                    onChange={this.handleAddress('province')
+                                }
+
+                                >
+                                    <MenuItem value={'Punjab'}>Punjab</MenuItem>
+                                    <MenuItem value={'Khaber Pakhton Khawa'}>Khyber Pakhtunkhawa</MenuItem>
+                                    <MenuItem value={'Sindh'}>Sindh</MenuItem>
+                                    <MenuItem value={'Balchistan'}>Balochistan</MenuItem>
+                                </Select>
+
                             </Grid>
+                            <Grid item >
+                                <Typography><b> Select City</b></Typography>
+                            </Grid>
+                            <Grid item style={{}}>
+                                <Select
+                                    required
+                                    className={classes.PropertyType}
+                                    id='city'
+                                    value={this.state.city}
+                                    onChange={this.handleAddress('city')}
+
+                                >
+                                    {
+                                        this.state.cities.map((val) => {
+                                            return (
+                                                <MenuItem value={val.label}>{val.label}</MenuItem>
+                                            )
+                                        })
+                                    }
+                                </Select>
+                            </Grid>
+
                             <Grid item >
                                 <Typography><b>Price</b></Typography>
                             </Grid>
@@ -244,28 +365,19 @@ componentDidMount (){
                                     placeholder="Property Type"
                                     label="Property Type"
                                     value={this.state.PropertyType}
-                                    onChange={this.handleSelect('PropertyType')}
+                                    onChange={(event) => this.handleSelect('PropertyType', event)}
                                 >
 
-                                    <MenuItem value={10}>House</MenuItem>
-                                    <MenuItem value={20}>Apartment</MenuItem>
-                                    <MenuItem value={30}>Bussiness Commercial</MenuItem>
+                                    <MenuItem value={'House'}>House</MenuItem>
+                                    <MenuItem value={'Apartment'}>Apartment</MenuItem>
+                                    <MenuItem value={'Bussiness Commercial'}>Bussiness Commercial</MenuItem>
                                 </Select>
                             </Grid>
                             <Grid item spacing={16}>
                                 <Typography>
                                     <b>Size</b>
                                 </Typography>
-                                <Select className={classes.PropertyType}
-                                    placeholder="Size"
-                                    label="Size"
-                                    value={this.state.Size}
-                                    onChange={this.handleSelect('Size')}
-                                >
-
-                                    <MenuItem value={10}>Marla</MenuItem>
-                                    <MenuItem value={20}>Sq Feet</MenuItem>
-                                </Select>
+                                
 
                             </Grid>
                             <Grid container item>
@@ -283,12 +395,13 @@ componentDidMount (){
                                 </Grid>
                             </Grid>
                             <Grid>
-                                <Button variant='contained' color='secondary'>Search</Button>
+                                <Button variant='contained' color='secondary' onClick = {this.filter}>Search</Button>
                             </Grid>
                         </Grid>
 
                     </Drawer>
                 </Hidden>
+
                 <main className={classes.content}>
                     <div  >
                         <AppBar position="relative" color="white">
@@ -312,12 +425,11 @@ componentDidMount (){
                                 <Tab icon={<LocationOnIcon />} />
                                 <Tab icon={<img src={require('../Images/details.png')} color='secondary' style={{ width: '20px', height: '20px' }} />} />
                             </Tabs>
-                            {value == 0 && <ImgMediaCard  properties={this.props.properties} changePAge={this.changePAge} images = {this.props.images}/>}
-                            {value == 1 && <MapsParent
-                                loadingElement={<div style={{ height: `100%` }} />}
-                                containerElement={<div style={{ height: `200px` }} />}
-                                mapElement={<div style={{ height: `100%` }} />} />}
-                            {value == 2 && <Details />}
+                            {value == 0 && <ImgMediaCard rows={this.state.properties}
+                                changePAge={this.changePAge} images={this.props.images} />}
+                            {value == 1 && <MapsParent data={this.state.properties} />}
+                            {value == 2 && <Details sellectedOwner={this.state.sellectedOwner}
+                                selcectedProperty={this.state.selcectedProperty} />}
                         </AppBar>
                     </div>
                 </main>

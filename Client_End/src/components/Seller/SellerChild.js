@@ -8,8 +8,12 @@ import { linkSync } from 'fs';
 import h2 from '../Images/h2.jpeg'
 import Footer from './footer.js'
 import { Map, InfoWindow, Marker, DirectionsRenderer, GoogleApiWrapper } from 'google-maps-react';
-
+import IntegrationReactSelect from './suggestion'
 import axios from 'axios'
+import CancelIcon from '@material-ui/icons/Cancel';
+import { emphasize } from '@material-ui/core/styles/colorManipulator';
+import Chip from '@material-ui/core/Chip';
+import NoSsr from '@material-ui/core/NoSsr';
 import firebase from '@firebase/app'
 import '@firebase/firestore';
 import '@firebase/storage';
@@ -83,13 +87,87 @@ const styles = {
         paddingLeft: '300px',
         width: '600px',
         height: '50px'
-    }
+    },
+    valueContainer: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        flex: 1,
+        alignItems: 'center',
+        overflow: 'hidden',
+    },
+    chip: {
+        margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
+    },
+    chipFocused: {
+        backgroundColor: emphasize(
+            theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+            0.08,
+        ),
+    },
+    noOptionsMessage: {
+        padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
+    },
+    singleValue: {
+        fontSize: 16,
+    },
+    placeholder: {
+        position: 'absolute',
+        left: 2,
+        fontSize: 16,
+    },
+    paper: {
+        position: 'absolute',
+        zIndex: 1,
+        marginTop: theme.spacing.unit,
+        left: 0,
+        right: 0,
+    },
+    divider: {
+        height: theme.spacing.unit * 2,
+    },
 };
 const mapStyles = {
     width: '380px',
     height: '300px'
 };
-
+const punjabSugestions = [
+    { label: 'Taxila' },
+    { label: 'Sialkot' },
+    { label: 'Sargodha' },
+    { label: 'Sahiwal' },
+    { label: 'Rahim Yar Khan' },
+    { label: 'Rawalpindi' },
+    { label: 'Pattoki' },
+    { label: 'Okara' },
+    { label: 'Narowal' },
+    { label: 'Murree' },
+    { label: 'Multan' },
+    { label: 'Mianwali' },
+    { label: 'Mandi Bahauddin' },
+    { label: 'Mailsi' },
+    { label: 'Layyah' },
+    { label: 'Lahore' },
+    { label: 'Kot Adu' },
+    { label: 'Khushab' },
+    { label: 'Khanpur' },
+    { label: 'Khanewal' },
+    { label: 'Kalabagh' },
+    { label: 'Gujrat' },
+    { label: 'Gujranwala' },
+    { label: 'Faisalabad' },
+    { label: 'Dera Ghazi Khan' },
+    { label: 'Chakwal' },
+    { label: 'Bhakkar' },
+    { label: 'Bahawalpur' },
+    { label: 'Bahawalnagar' },
+    { label: 'Attock' },
+    { label: 'Arifwala' },
+    { label: 'Alipur' },
+    { label: 'Raiwind' },
+].map(suggestion => ({
+    value: suggestion.label,
+    label: suggestion.label,
+}));
 class SellerChild extends React.Component {
 
     constructor(props) {
@@ -101,10 +179,10 @@ class SellerChild extends React.Component {
             showingInfoWindow: false,  //Hides or the shows the infoWindow
             activeMarker: {},          //Shows the active marker upon click
             selectedPlace: {},
-            fullAddres: '',
+            fullAddres: '', cities: [],
             address: '', pro: 0, bahtrooms: 0, garage: false, ac: false, Bedroooms: 0,
             PropertyType: '', imageP: '', phoneNumber: '', name: '', Password: '', Email: '', rent: '',
-            imageFile: [], url: ""
+            imageFile: [], url: "", size: '', city: '', province: ''
         }
         this.handleBack = this.handleBack.bind(this);
         this.handleNext = this.handleNext.bind(this);
@@ -120,9 +198,20 @@ class SellerChild extends React.Component {
         this.setFile = this.setFile.bind(this);
         this.firebaseReuest = this.firebaseReuest.bind(this);
         this.UploadImages = this.UploadImages.bind(this);
+        this.handleAddress = this.handleAddress.bind(this);
     }
+    handleAddress = name => value => {
+        this.setState({ [name]: value.target.value })
+        if (name === 'province') {
+            if (value.target.value === 'Punjab') {
+                this.setState({ cities: punjabSugestions })
+            }
+            else {
+                this.setState({ cities: [] })
+            }
+        }
+    };
     firebaseReuest = (image) => {
-
         const fd = new FormData();
         fd.append('image', image, image.name);
         console.log(fd)
@@ -147,7 +236,13 @@ class SellerChild extends React.Component {
         }
     }
     setFile = (event) => {
+        if (event.target.files[0] == null || event.target.files[0] == undefined)
+        {
+            this.setState({file: h2 })
+        }
+        else{
         this.setState({ imageFile: event.target.files, file: URL.createObjectURL(event.target.files[0]) })
+        }
     }
     handlePicture(event) {
         this.setState({ file: URL.createObjectURL(event.target.files[0]) })
@@ -158,14 +253,19 @@ class SellerChild extends React.Component {
             this.props.handleProperty(this.state.lat, this.state.lng, this.state.fullAddres,
                 this.state.PropertyType, this.state.Bedroooms, this.state.bahtrooms,
                 this.state.garage, this.state.ac, this.state.name, this.state.Password,
-                this.state.Email, this.state.phoneNumber, this.state.rent, true, this.state.url)
+                this.state.Email, this.state.phoneNumber, this.state.rent, true, this.state.url,
+                this.state.size, this.state.city, this.state.province)
         }
         else {
             this.props.handleProperty(this.state.lat, this.state.lng, this.state.fullAddres,
                 this.state.PropertyType, this.state.Bedroooms, this.state.bahtrooms,
                 this.state.garage, this.state.ac, this.state.name, this.state.Password,
-                this.state.Email, this.state.phoneNumber, this.state.rent, false, this.state.url)
+                this.state.Email, this.state.phoneNumber, this.state.rent, false,
+                this.state.url, this.state.size, this.state.city, this.state.province)
         }
+    }
+    handleSuggestions() {
+
     }
     handleChange(event) {
         if (event.target.id !== 'ac' && event.target.id != 'garage') {
@@ -197,8 +297,6 @@ class SellerChild extends React.Component {
             .then(({ lat, lng }) =>
                 this.setState({ lat: { lat, lng }.lat, lng: { lat, lng }.lng })
             );
-
-
     };
     onMarkerClick = (props, marker, e) => {
         this.setState({
@@ -219,7 +317,7 @@ class SellerChild extends React.Component {
     loggedUser() {
         if (this.props.isLogged !== undefined) {
             return (
-                <Button color='secondary' style={{ marginLeft: '33%', marginBottom: '1%' , minHeight : '40px', minWidth :'100px'}} variant='contained' onClick={this.handleSubmit}>Submit</Button>
+                <Button color='secondary' style={{ marginLeft: '33%', marginBottom: '1%', minHeight: '40px', minWidth: '100px' }} variant='contained' onClick={this.handleSubmit}>Submit</Button>
             )
         }
     }
@@ -236,7 +334,7 @@ class SellerChild extends React.Component {
                     <Grid item style={{}}>
                         <Select
                             required
-                            style={{ width: '300px' }}
+                            style={{ width: '350px' }}
                             id='PropertyType'
                             value={this.state.PropertyType}
                             onChange={this.handleChangeSelect}
@@ -248,17 +346,32 @@ class SellerChild extends React.Component {
                         </Select>
 
                     </Grid>
+                    <Grid container item style={{}}>
+                        <Grid container item spacing={8} style={{ marginTop: '1%' }} lg={8}>
+                            <Grid item>
+                                <Typography variant='subheading' style={{ fontFamily: '"Titillium Web",sans-serif' }} variant='subheading'>Area</Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant='subheading' style={{ fontFamily: '"Titillium Web",sans-serif', marginTop: '10%' }} variant='caption'>(in Marla)</Typography>
+                            </Grid>
+                        </Grid>
+                        <Grid item style={{}} lg={4}><TextField value={this.state.size} type = 'number' id='size' onChange={this.handleChange} style={{ width: '80px' , margin : '0px 0px 0px 10px'}} /></Grid>
+                    </Grid>
                     <Grid container item >
                         <Grid item style={{ marginTop: '1%' }} lg={8}><Typography variant='subheading' style={{ fontFamily: '"Titillium Web",sans-serif' }} variant='subheading'>Is Garage Available?</Typography></Grid>
-                        <Grid item style={{}} lg={4} ><Switch checked={this.state.garage} id='garage' onChange={this.handleChange} /></Grid>
+                        <Grid item style={{paddingLeft : '28px'}} lg={4} ><Switch checked={this.state.garage} id='garage' onChange={this.handleChange} /></Grid>
                     </Grid>
                     <Grid container item style={{}} >
                         <Grid item style={{ marginTop: '1%' }} lg={8}><Typography variant='subheading' style={{ fontFamily: '"Titillium Web",sans-serif' }}>Is AirConditionar(AC) Available?</Typography></Grid>
-                        <Grid item style={{}} lg={4}><Switch checked={this.state.ac} id='ac' onChange={this.handleChange} /></Grid>
+                        <Grid item style={{paddingLeft : '28px'}} lg={4}><Switch checked={this.state.ac}  id='ac' onChange={this.handleChange} /></Grid>
                     </Grid>
                     <Grid container item style={{}} >
-                        <Grid item style={{ marginTop: '1%' }} lg={8}><Typography variant='subheading' style={{ fontFamily: '"Titillium Web",sans-serif' }}>Rent of Property</Typography></Grid>
-                        <Grid item lg={2}><TextField value={this.state.rent} id='rent' style={{ width: '80px' }} placeholder='10000' onChange={this.handleChange} /></Grid>
+                        <Grid item style={{ marginTop: '1%' }} lg={8}><Typography variant='subheading' style={{ fontFamily: '"Titillium Web",sans-serif' }}>Property Rent</Typography>
+                        </Grid>
+                        <Grid item >
+                        <Typography variant='subheading' style={{ fontFamily: '"Titillium Web",sans-serif', marginTop: '10%' }} variant='caption'>(Per Month)</Typography>
+                        </Grid>
+                        <Grid item lg={2}><TextField value={this.state.rent} id='rent' style={{ width: '80px' }}  onChange={this.handleChange} /></Grid>
                     </Grid>
                     <Grid container item style={{}}>
                         <Grid item style={{ marginTop: '1%' }} lg={8}><Typography variant='subheading' style={{ fontFamily: '"Titillium Web",sans-serif' }} variant='subheading'>How many Bedroooms?</Typography></Grid>
@@ -277,7 +390,41 @@ class SellerChild extends React.Component {
                     <Grid item style={{ marginBottom: '3%', color: 'black', }}>
                         <Typography variant='display1' >Property Information:</Typography>
                     </Grid>
+                    <Grid item style={{}}>
+                        <Select
+                            required
+                            style={{ width: '250px' }}
+                            id='province'
+                            value={this.state.province}
+                            onChange={this.handleAddress('province')}
 
+
+                        >
+                            <MenuItem value={'Punjab'}>Punjab</MenuItem>
+                            <MenuItem value={'Khaber Pakhton Khawa'}>Khyber Pakhtunkhwa</MenuItem>
+                            <MenuItem value={'Sindh'}>Sindh</MenuItem>
+                            <MenuItem value={'Balchistan'}>Balochistan</MenuItem>
+                        </Select>
+
+                    </Grid><Grid item style={{}}>
+                        <Select
+                            required
+                            style={{ width: '250px' }}
+                            id='city'
+                            value={this.state.city}
+                            onChange={this.handleAddress('city')}
+
+                        >
+                            {
+
+                                this.state.cities.map((val) => {
+                                    return (
+                                        <MenuItem value={val.label}>{val.label}</MenuItem>
+                                    )
+                                })
+                            }
+                        </Select>
+                    </Grid>
                     <Grid container item direction='column' style={{}} >
                         <Grid item style={{ height: '150px' }}>
                             <PlacesAutocomplete
@@ -373,7 +520,7 @@ class SellerChild extends React.Component {
                     <Grid item style={{}} >
                         <TextField type='file' id='fullAddres' onChange={this.setFile} style={{ width: '250px' }}
                         />
-                        
+
                     </Grid>
                     <Grid item style={{}} >
                         <img src={this.state.file} style={{ width: '250px', height: '220px' }} />
@@ -401,8 +548,8 @@ class SellerChild extends React.Component {
                     </Grid>
                     <Grid item style={{}}  ><TextField value={this.state.phoneNumber} id='phoneNumber' onChange={this.handleChange} label='Phone Number' id='phoneNumber' value={this.state.phoneNumber} onChange={this.handleChange} placeholder='03011212123' style={{ width: '250px' }} />
                     </Grid>
-                    <Grid item style={{ marginLeft: '16%' }}   >
-                        <Button variant='contained' color='secondary' onClick={this.UploadImages} >Submit</Button>
+                    <Grid item style={{ marginLeft: '16%', textAlign : 'right'}}   >
+                        <Button variant='contained' color='secondary' style = {{marginRight: '150px'}} onClick={this.UploadImages} >Submit</Button>
                     </Grid>
                 </Grid>
 
@@ -442,7 +589,8 @@ class SellerChild extends React.Component {
                                 <Button variant='raised' color='secondary' disabled={this.state.pro === 0} onClick={this.handleBack}>Back</Button>
                             </Grid>
                             <Grid item style={{ marginLeft: '50%' }}>
-                                <Button variant='raised' color='secondary' disabled={this.state.pro === 30 || this.props.isLogged !== undefined && this.state.pro === 20} onClick={this.handleNext}>Next</Button>
+                                
+                                <Button variant='raised' color='secondary'  disabled={this.state.pro === 30 || this.props.isLogged !== undefined && this.state.pro === 20} onClick={this.handleNext}>Next</Button>
                             </Grid>
                         </Grid>
                     </Paper>

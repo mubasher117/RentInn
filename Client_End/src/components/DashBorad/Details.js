@@ -66,12 +66,12 @@ class Details extends React.Component {
         super(props);
 
         this.state = {
-            lat: null, lng: null,
+            lat: this.props.selcectedProperty.lat, lng: this.props.selcectedProperty.lan,
             activeStep: 0,
             showingInfoWindow: false,  //Hides or the shows the infoWindow
             activeMarker: {},          //Shows the active marker upon click
             selectedPlace: {},
-            address: ''
+            address: '', data: this.props.selcectedProperty
         };
         this.onMarkerClick = this.onMarkerClick.bind(this);
         this.onClose = this.onClose.bind(this);
@@ -86,7 +86,9 @@ class Details extends React.Component {
 
         this.setState({ address });
     };
-
+    componentWillReceiveProps(itemProps) {
+        this.setState({ data: itemProps.data, lat: itemProps.lan, lng: itemProps.lan })
+    }
     handleSelect = address => {
         geocodeByAddress(address)
             .then(results => getLatLng(results[0]))
@@ -113,6 +115,7 @@ class Details extends React.Component {
         }
     };
     render() {
+        alert(this.props.selcectedProperty.rent)
         console.log(this.state.lat, this.state.lng)
         const { classes } = this.props;
         return (
@@ -123,16 +126,16 @@ class Details extends React.Component {
                             <Grid item style={{ marginTop: '1%', marginBottom: '1%', marginLeft: '1%' }} lg={2.9}>
                                 <GridList cols='1'>
                                     <GridListTile>
-                                        <img src={require('../Images/h1.jpeg')} style={{ width: '220px', }} />
+                                        <img src={this.state.data.MainImage} style={{ width: '220px', }} />
                                         <GridListTileBar
-                                            title={'12000/Month'}
+                                            title={this.state.data.rent}
                                         />
                                     </GridListTile>
                                 </GridList>
                             </Grid>
                             <Grid container item direction='column' style={{ marginLeft: '1%' }} lg={5} spacing={7}>
                                 <Grid item style={{ marginBottom: '7%' }}>
-                                    <Typography variant='title'><b>5 Marla House at Gulshan -e - Ravi ,Lahore</b></Typography>
+                                    <Typography variant='title'><b>{this.state.data.Address}</b></Typography>
                                 </Grid>
                                 <Grid container item spacing={8}>
 
@@ -144,8 +147,8 @@ class Details extends React.Component {
                                         </Grid>
                                         <Grid item lg={4}>
                                             <Typography  >
-                                                12500/Month
-                                        </Typography>
+                                                {this.state.data.rent}
+                                            </Typography>
                                         </Grid>
                                     </Grid>
                                     <Grid container item spacing={40} style={{ marginLeft: '1%' }} >
@@ -156,8 +159,8 @@ class Details extends React.Component {
                                         </Grid>
                                         <Grid item lg={4}>
                                             <Typography  >
-                                                House
-                                        </Typography>
+                                                {this.state.data.PropertyType}
+                                            </Typography>
                                         </Grid>
                                     </Grid>
                                     <Grid container item spacing={40} style={{ marginLeft: '1%' }}>
@@ -168,7 +171,7 @@ class Details extends React.Component {
                                         </Grid>
                                         <Grid item lg={4}>
                                             <Typography  >
-                                                5 Marla
+                                                {this.state.data.Area} Marla
                                         </Typography>
                                         </Grid>
                                     </Grid>
@@ -180,8 +183,8 @@ class Details extends React.Component {
                                         </Grid>
                                         <Grid item lg={4}>
                                             <Typography  >
-                                                5
-                                        </Typography>
+                                                {this.state.data.Bedrooms}
+                                            </Typography>
                                         </Grid>
                                     </Grid>
                                     <Grid container item spacing={40} style={{ marginLeft: '1%' }}>
@@ -192,8 +195,8 @@ class Details extends React.Component {
                                         </Grid>
                                         <Grid item lg={4}>
                                             <Typography  >
-                                                3
-                                        </Typography>
+                                                {this.state.data.Bathrooms}
+                                            </Typography>
                                         </Grid>
                                     </Grid>
                                 </Grid>
@@ -210,10 +213,10 @@ class Details extends React.Component {
                                             </Grid>
                                             <Grid container item direction='column' lg={9} >
                                                 <Grid item xs>
-                                                    <Typography variant='title'> Muhammad Imran Isamil Siddiqui</Typography>
+                                                    <Typography variant='title'>{this.props.sellectedOwner.name}</Typography>
                                                 </Grid>
                                                 <Grid item xs>
-                                                    <Typography variant='subheading'> 0300-12312312</Typography>
+                                                    <Typography variant='subheading'>{this.props.sellectedOwner.phoneNo}</Typography>
                                                 </Grid>
                                             </Grid>
                                         </Grid>
@@ -229,19 +232,19 @@ class Details extends React.Component {
                         <Typography variant='headline'>Location:</Typography>
                         <Map
                             google={this.props.google}
-                            zoom={18}
+                            zoom={16}
                             style={mapStyles}
                             initialCenter={{
-                                lat: 31.5792183,
-                                lng: 74.3522308
+                                lat: this.state.lat,
+                                lng: this.state.lng
                             }}
                             onChildMouseMove={() => console.log('move')}
                         ><Marker
                                 icon={<LocationOnIcon />}
                                 name={this.state.selectedPlace.name}
                                 position={{
-                                    lat: 31.5794125,
-                                    lng: 74.3525795,
+                                    lat: this.state.data.lat,
+                                    lng: this.state.data.lan
                                 }}
 
                             />

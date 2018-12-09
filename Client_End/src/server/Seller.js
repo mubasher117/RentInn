@@ -4,7 +4,8 @@ import { ROOT_URL } from '../constants/config';
 
 export const SellerServer = {
     handleRegister: handleRegister,
-    handleProperty: handleProperty
+    handleProperty: handleProperty,
+    handleUser:handleUser
 }
 
 export function handleRegister(username, password, email, phoneNo) {
@@ -36,13 +37,33 @@ export function handleRegister(username, password, email, phoneNo) {
         })
     return { type: seller_Actions.seller_SignIn.NEW, payload: 'none' };
 };
+export function handleUser(userId) {
 
 
-export function handleProperty(OwnerId, lat, lan, Address, propertType, Bedrooms, Bathrooms, Garage, Ac, rent, MainImage) {
-    alert(MainImage)
+    const postRequest = fetch(ROOT_URL + '/api/RentINN/GetSpecificUser/' + userId, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+        mode: 'cors',
+    }).then((response) => {
+        response.json().then(data => {
+            if (data.getStatus == 'failed') {
+                store.dispatch({ type:seller_Actions.seller_SignIn.FAILURE, payload: data });
+                return;
+            }
+            else {
+                store.dispatch({ type: seller_Actions.seller_SignIn.MAIN, payload: data });
+                return;
+            }
+        });
+    })
+    return { type: seller_Actions.seller_SignIn.NEW, payload: 'none' };
+};
+
+export function handleProperty(OwnerId, lat, lan, Address, propertType, Bedrooms, Bathrooms, Garage, Ac, rent, MainImage, size, province, city) {
     var user = {
         "OwnerId": OwnerId, "lat": lat, "lan": lan, "Address": Address, "PropertyType": propertType,
-        "Bedrooms": Bedrooms, "Bathrooms": Bathrooms, "Garage": Garage, "AC": Ac, "rent": rent, "MainImage" : MainImage
+        "Bedrooms": Bedrooms, "Bathrooms": Bathrooms, "Garage": Garage, "AC": Ac, "rent": rent,
+        "MainImage": MainImage, "Area": size, "Provice": province, "City": city
     }
     fetch(ROOT_URL + '/api/RentINN/UploadProperty', {
         method: 'POST',

@@ -4,6 +4,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { withStyles } from '@material-ui/core/styles';
 import Main from '../Images/h2Main.jpg'
 import { Tabs, Tab, Select, MenuItem, Switch, Toolbar, Divider, AppBar, Button, Typography, TextField, Paper } from '@material-ui/core';
+import { Line, Circle } from 'rc-progress';
 import Footer from './footer'
 const theme = createMuiTheme({
     palette: {
@@ -158,7 +159,7 @@ class MainPage extends React.Component {
                 </Grid>
                 <Grid item style={{ marginTop: '3%' }} >
                     <Typography color='secondary' variant="display1" align="center"  >
-                        Our Offers 
+                        Our Offerings
                     </Typography>
                 </Grid>
                 <Grid container lg={11} style={{ marginTop: '3%', marginLeft: '8%' }}>

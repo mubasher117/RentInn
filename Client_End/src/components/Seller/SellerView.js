@@ -19,16 +19,19 @@ const mapStateToProps = (state) => {//substribe
   return {
     seller_status: state.seller_Reducer.seller_status,
     seller_id: state.seller_Reducer.seller_id,
+    user: state.seller_Reducer.user
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {//to dispatch
+
     handleRegister: (name, password, email, phoneNumber) => {
       dispatch(SellerServer.handleRegister(name, password, email, phoneNumber))
     },
-    handleOrder: (ownerid, lat, lan, fullAddres, propertyType, bedrooms, bathrooms, garage, ac, rent,MainImage) => {
+    handleUser: (id) => { dispatch(SellerServer.handleUser(id)) },
+    handleOrder: (ownerid, lat, lan, fullAddres, propertyType, bedrooms, bathrooms, garage, ac, rent, MainImage, size) => {
       dispatch(SellerServer.handleProperty(ownerid, lat, lan, fullAddres, propertyType,
-        bedrooms, bathrooms, garage, ac, rent, MainImage))
+        bedrooms, bathrooms, garage, ac, rent, MainImage, size))
     }
   };
 
@@ -69,7 +72,7 @@ class SellerView extends Component {
       lat: null, lng: null,
       fullAddres: '', bahtrooms: 0, garage: false, ac: false, Bedroooms: 0,
       PropertyType: '', imageP: '', phoneNumber: '', name: '', Password: '', Email: '', rent: '', ownerId: '',
-      MainImage : null
+      MainImage: null, size: '', city: '', province: '', owner: this.props.user
 
     }
     this.handleBack = this.handleBack.bind(this);
@@ -87,39 +90,43 @@ class SellerView extends Component {
     }
   }
   getAvatar() {
-    if (this.props.match.params.userId !== undefined) {
+    if (this.props.match.params.userId !== undefined && this.props.user.length > 0) {
       return (
-        <Avatar className={this.props.classes.purpleAvatar}>{'Q'}</Avatar>
+        <Avatar className={this.props.classes.purpleAvatar}>{this.props.user[0].name[0].toUpperCase()}</Avatar>
       );
-    }
-    else {
-      return (
-        <Avatar className={this.props.classes.purpleAvatar}>R</Avatar>);
     }
   }
   getName() {
-    if (this.props.match.params.userId !== undefined) {
+    if (this.props.match.params.userId !== undefined && this.props.user.length > 0) {
       return (
-        <Typography style={{ color: 'white', marginRight: '1%' }}>{'User Inn'}</Typography>
+        <Typography style={{ color: 'white', marginRight: '1%' }}>{this.props.user[0].name.toUpperCase()}</Typography>
       );
     }
+  }
+  getSignOutButton() {
+    if (this.props.match.params.userId !== undefined) {
+      return (<Button onClick={this.logout} variant='raised' color='secondary' >Log Out </Button>);
+    }
     else {
-      return (
-        <Typography style={{ color: 'white' }}>Rent Inn</Typography>);
+      return (<Button variant='raised' color='secondary' >Log In </Button>);
     }
   }
+  componentWillReceiveProps(props) {
+    this.setState({ owner: props.owner })
+  }
   handleProperty(lat, lan, fullAddress, propertyType, bedrooms, bathrooms,
-    garage, ac, name, password, email, phoneNumber, rent, isUserAvailable , MainImage) {
-alert('in handle property'+MainImage)
+    garage, ac, name, password, email, phoneNumber, rent, isUserAvailable, MainImage, size, city, province, ) {
+
     this.setState({
       lat: lat, lan: lan, fullAddres: fullAddress, PropertyType: propertyType
       , Bedroooms: bedrooms, bahtrooms: bathrooms, garage: garage, ac: ac, name: name,
-      Password: password, Email: email, phoneNumber: phoneNumber, rent: rent, MainImage :MainImage
+      Password: password, Email: email, phoneNumber: phoneNumber, rent: rent, MainImage: MainImage, size: size,
+      city: city, province, province
     })
-    
+
     if (isUserAvailable === true) {
       this.props.handleOrder(this.props.match.params.userId, lat, lan, fullAddress, propertyType, bedrooms,
-        bathrooms, garage, ac, rent,MainImage )
+        bathrooms, garage, ac, rent, MainImage, size, province, city)
     }
     else {
 
@@ -129,6 +136,12 @@ alert('in handle property'+MainImage)
   handleBack() {
     this.props.history.push('/');
   }
+  componentDidMount() {
+    if (this.props.match.params.userId !== undefined) {
+    
+      this.props.handleUser(this.props.match.params.userId)
+    }
+  }
   getScreen(status) {
     console.log("I am from seller Component getScreen: " + status);
     switch (status) {
@@ -136,10 +149,16 @@ alert('in handle property'+MainImage)
         return (
           <SellerChild isLogged={this.props.match.params.userId} handleBackClick={this.props.handleBackClick} handleProperty={this.handleProperty} />);
         break;
-      case seller_Status.seller_SignIn.SELLER_DATA:
-      alert(this.state.MainImage)
+      case seller_Status.seller_SignIn.MAIN:
         return (
-          this.props.handleOrder(this.props.seller_id, this.state.lat, this.state.lan, this.state.fullAddres, this.state.PropertyType, this.state.Bedroooms, this.state.bahtrooms, this.state.garage, this.state.ac, this.state.rent,this.state.MainImage)
+          <SellerChild isLogged={this.props.match.params.userId} handleBackClick={this.props.handleBackClick} handleProperty={this.handleProperty} />);
+        break;
+      case seller_Status.seller_SignIn.SELLER_DATA:
+        return (
+          this.props.handleOrder(this.props.seller_id, this.state.lat, this.state.lan,
+            this.state.fullAddres, this.state.PropertyType, this.state.Bedroooms,
+            this.state.bahtrooms, this.state.garage, this.state.ac, this.state.rent,
+            this.state.MainImage, this.state.size, this.state.province, this.state.city)
         );
         break;
       case seller_Status.seller_SignIn.SUCCESS:
@@ -148,8 +167,7 @@ alert('in handle property'+MainImage)
         break;
     }
   }
-  logout(){
-    console.log("got in logout")
+  logout() {
     this.props.history.push('/');
   }
   render() {
@@ -165,7 +183,7 @@ alert('in handle property'+MainImage)
           </Typography>
             {this.getAvatar()}
             {this.getName()}
-            <Button onclick = {this.logout} variant='raised' color='secondary' >Log Out </Button>
+            {this.getSignOutButton()}
           </Toolbar>
         </AppBar>
         {this.getScreen(this.props.seller_status)}

@@ -97,12 +97,15 @@ class DashBoard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { value: '' }
+    this.state = { value: '', properties: this.props.properties ,accounts:this.props.accounts}
   }
   handleChange = (event, value) => {
     this.setState({ value });
   };
-  componentDidMount(){
+  componentDidMount() {
+  }
+  componentWillReceiveProps(props) {
+    this.setState({ properties: props.properties,accounts:props.accounts })
   }
   render() {
 
@@ -121,12 +124,12 @@ class DashBoard extends React.Component {
                 </Typography>
                 <Button color="secondary" onClick={this.props.handleSeller} style={{ color: 'white', outlineColor: 'white' }} variant='raised'>Rent Now</Button>
                 <Button color="secondary" onClick={this.props.handleLogin} style={{ marginLeft: '1%', color: 'white' }} variant='raised'>Login</Button>
-                
+
               </Toolbar>
             </AppBar>
           </Grid>
           <Grid item style={{ marginTop: '4%' }}><SwipeableTextMobileStepper tutorialSteps={tutorialSteps} /></Grid>
-          <ClippedDrawer  properties={this.props.properties} images = {this.props.images}/>
+          <ClippedDrawer accounts={this.state.accounts} properties={this.state.properties} images={this.props.images} />
 
         </Grid>
         <Footer />

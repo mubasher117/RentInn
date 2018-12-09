@@ -67,21 +67,21 @@ class MapsParent extends React.Component {
 
             <Map
                 google={this.props.google}
-                zoom={16}
+                zoom={10}
 
                 style={mapStyles}
                 initialCenter={{
-                    lat: 31.5792183,
-                    lng: 74.3522308
+                    lat: 31.5204,
+                    lng: 74.3587
                 }}
 
             >
-                {tutorialSteps.map((val) => <Marker
+                {this.props.data.map((val) => <Marker
                     onClick={this.onMarkerClick}
                     name={val.name}
                     position={{
                         lat: val.lat,
-                        lng: val.lng
+                        lng: val.lan
                     }}
                 />)}
 

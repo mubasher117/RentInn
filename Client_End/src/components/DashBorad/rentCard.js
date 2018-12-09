@@ -18,7 +18,7 @@ import { connect } from "react-redux";
 import { withRouter } from 'react-router'
 import { Grid, Paper, GridList, GridListTile, GridListTileBar } from '@material-ui/core';
 import rootReducer from '../../reducers/index'
-import {PictureServer} from '../../server/PictureServer'
+import { PictureServer } from '../../server/PictureServer'
 
 import h1 from '../Images/h1.jpeg';
 import h2 from '../Images/h2.jpeg';
@@ -35,7 +35,7 @@ const actionsStyles = theme => ({
 
 const mapStateToProps = (state) => {//substribe
   return {
-    pictures : state.picture_reducer.pictures
+    pictures: state.picture_reducer.pictures
   };
 };
 class TablePaginationActions extends React.Component {
@@ -110,9 +110,9 @@ const TablePaginationActionsWrapped = withStyles(actionsStyles, { withTheme: tru
 );
 
 let counter = 0;
-function createData(img,houseName,bedroom, properySize, bathrooms,rent) {
+function createData(img, houseName, bedroom, properySize, bathrooms, rent) {
   counter += 1;
-  return { houseName: houseName,img:img,bedroom: bedroom, properySize:properySize, bathrooms:bathrooms,rent:rent };
+  return { houseName: houseName, img: img, bedroom: bedroom, properySize: properySize, bathrooms: bathrooms, rent: rent };
 }
 
 const styles = theme => ({
@@ -128,88 +128,95 @@ const styles = theme => ({
   },
 });
 class SmallPaper extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        return (
-            <Paper style={{ marginTop: '3%', marginLeft: '2%' ,width:'95%'}} lg={10} >
-                <Grid container style={{ marginLeft: '2%', marginTop: '2%' }} lg={10}>
-                    <Grid item style={{ marginTop: '1%', marginBottom: '1%' }} lg={2.9}>
-                        <GridList cols='1'>
-                            <GridListTile>
-                                <img src={this.props.imgC} style={{ width: '220px', }} />
-                                <GridListTileBar
-                                    title={this.props.rent+'/Month'}
-                                />
-                            </GridListTile>
-                        </GridList>
-                    </Grid>
-                    <Grid item container direction='column' style={{ marginTop: '5%', marginLeft: '2%' }} spacing={4} lg={7}>
-                        <Grid item>
-                            <Typography variant="h5" component="h2">
-                                <b>{this.props.houseName}</b>
-                            </Typography>
-                        </Grid>
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <Paper style={{ marginTop: '3%', marginLeft: '2%', width: '95%' }} lg={10} >
+        <Grid container style={{ marginLeft: '2%', marginTop: '2%' }} lg={10}>
+          <Grid item style={{ marginTop: '1%', marginBottom: '1%' }} lg={2.9}>
+            <GridList cols='1'>
+              <GridListTile>
+                <img src={this.props.imgC} style={{ width: '220px', }} />
+                <GridListTileBar
+                  title={this.props.rent + '/Month'}
+                />
+              </GridListTile>
+            </GridList>
+          </Grid>
+          <Grid item container direction='column' style={{ marginTop: '5%', marginLeft: '2%' }} spacing={4} lg={7}>
+            <Grid item>
+              <Typography variant="h5" component="h2">
+                <b>{this.props.houseName}</b>
+              </Typography>
+            </Grid>
 
-                        <Grid container item spacing={8} style={{marginLeft:'1%'}}>
-                            <Grid item>
-                                <Typography variant='title' >
-                                    <b>{this.props.bedroom}</b>
-                                </Typography>
-                            </Grid>
-                            <Grid item>
-                                <Typography   >
-                                    Bedrooms
+            <Grid container item spacing={8} style={{ marginLeft: '1%' }}>
+              <Grid item>
+                <Typography variant='title' >
+                  <b>{this.props.bedroom}</b>
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography   >
+                  Bedrooms
                             </Typography>
-                            </Grid>
-                        </Grid>
-                        <Grid container item spacing={8} style={{marginLeft:'1%'}}>
-                            <Grid item>
-                                <Typography variant='title' >
-                                    <b>{this.props.bathrooms}</b>
-                                </Typography>
-                            </Grid>
-                            <Grid item>
-                                <Typography   >
-                                    Bathrooms
+              </Grid>
+            </Grid>
+            <Grid container item spacing={8} style={{ marginLeft: '1%' }}>
+              <Grid item>
+                <Typography variant='title' >
+                  <b>{this.props.bathrooms}</b>
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography   >
+                  Bathrooms
                             </Typography>
-                            </Grid>
-                        </Grid>
-                        <Grid container item spacing={8} style={{marginLeft:'1%'}}>
-                            <Grid item>
-                                <Typography variant='title' >
-                                    <b>{this.props.properySize}</b>
-                                </Typography>
-                            </Grid>
-                            <Grid item>
-                                <Typography   >
-                                    Marla
-                            </Typography>
-                            </Grid>
-                        </Grid>
-                    </Grid>
+              </Grid>
+            </Grid>
+            <Grid container item spacing={8} style={{ marginLeft: '1%' }}>
+              <Grid item>
+                <Typography variant='title' >
+                  <b>{this.props.properySize}</b>
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography   >
+                  Marla
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
 
 
-                    <Grid item style={{ marginTop: '10%' }} lg={1}>
-                        <Button color='secondary' size='large' variant='contained' onClick={this.props.changePAge}>Details</Button>
-                    </Grid>
-                </Grid>
-            </Paper>
-        )
-    }
+          <Grid item style={{ marginTop: '10%' }} lg={1}>
+            <Button color='secondary' size='large' variant='contained' onClick={() => this.props.changePAge(this.props.data) }>Details</Button>
+          </Grid>
+        </Grid>
+      </Paper>
+    )
+  }
 };
 
 SmallPaper.propTypes = {
-    classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 class ImgMediaCard extends React.Component {
-  state = {
-    rows: this.props.properties,
-    page: 0,
-    rowsPerPage: 5,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      rows: this.props.rows,
+      page: 0,
+      rowsPerPage: 5,
+    };
+    this.changePAge = this.changePAge.bind(this);
+  }
+  changePAge(row) {
+    this.props.changePAge(row);
+  }
 
   handleChangePage = (event, page) => {
     this.setState({ page });
@@ -218,26 +225,25 @@ class ImgMediaCard extends React.Component {
   handleChangeRowsPerPage = event => {
     this.setState({ rowsPerPage: event.target.value });
   };
-  componentWillReceiveProps(itemProps){
-    this.setState({rows:itemProps.rows})
+  componentWillReceiveProps(itemProps) {
+    this.setState({ rows: itemProps.rows })
   }
-  componentDidMount(){
-    
-  }
-
   render() {
-    const { classes } = this.props;
-    const { rows, rowsPerPage, page } = this.state;
+    const { rows, classes } = this.props;
+    const { rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
     return (
-      <Paper className={classes.root}style={{width:'97%',marginLeft:'2%',marginBottom:'2%'}} > 
+      <Paper className={classes.root} style={{ width: '97%', marginLeft: '2%', marginBottom: '2%' }} >
         <div className={classes.tableWrapper}>
           <Table className={classes.table}>
             <TableBody>
-              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
+              {this.props.rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
                 return (
-                    <SmallPaper cardProps={classes.card} imgC={row.MainImage} houseName={row.Address} properySize={'5'} bedroom={row.Bedrooms} changePAge={this.props.changePAge} bathrooms={row.Bathrooms} rent={row.rent} />
+                  <SmallPaper cardProps={classes.card} data={row}
+                    imgC={row.MainImage} houseName={row.Address} properySize={row.Area}
+                    bedroom={row.Bedrooms} changePAge={this.changePAge}
+                    bathrooms={row.Bathrooms} rent={row.rent} />
                 );
               })}
               {emptyRows > 0 && (
@@ -270,4 +276,4 @@ ImgMediaCard.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ImgMediaCard) ; withRouter(connect(mapStateToProps)(ImgMediaCard));
+export default withStyles(styles)(ImgMediaCard); withRouter(connect(mapStateToProps)(ImgMediaCard));

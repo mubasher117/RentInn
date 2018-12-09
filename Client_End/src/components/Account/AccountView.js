@@ -70,7 +70,6 @@ class AccountView extends Component {
     this.props.handleDetails();
   }
   handleRentAgain() {
-    alert(this.state.accountId)
     this.props.history.push('/seller/' + this.state.accountId);
   }
   getAvatar() {
