@@ -248,20 +248,19 @@ class SellerChild extends React.Component {
         this.setState({ file: URL.createObjectURL(event.target.files[0]) })
     }
     handleSubmit() {
-        console.log(this.state.url)
         if (this.props.isLogged !== undefined) {
             this.props.handleProperty(this.state.lat, this.state.lng, this.state.fullAddres,
                 this.state.PropertyType, this.state.Bedroooms, this.state.bahtrooms,
                 this.state.garage, this.state.ac, this.state.name, this.state.Password,
                 this.state.Email, this.state.phoneNumber, this.state.rent, true, this.state.url,
-                this.state.size, this.state.city, this.state.province)
+                this.state.size, this.state.province, this.state.city)
         }
         else {
             this.props.handleProperty(this.state.lat, this.state.lng, this.state.fullAddres,
                 this.state.PropertyType, this.state.Bedroooms, this.state.bahtrooms,
                 this.state.garage, this.state.ac, this.state.name, this.state.Password,
                 this.state.Email, this.state.phoneNumber, this.state.rent, false,
-                this.state.url, this.state.size, this.state.city, this.state.province)
+                this.state.url, this.state.size, this.state.province, this.state.city)
         }
     }
     handleSuggestions() {
@@ -341,7 +340,7 @@ class SellerChild extends React.Component {
 
                         >
                             <MenuItem value={'House'}>House</MenuItem>
-                            <MenuItem value={'Aparment'}>Apartment</MenuItem>
+                            <MenuItem value={'Apartment'}>Apartment</MenuItem>
                             <MenuItem value={'Bussiness Commercial'}>Bussiness Commercial</MenuItem>
                         </Select>
 
@@ -366,12 +365,10 @@ class SellerChild extends React.Component {
                         <Grid item style={{paddingLeft : '28px'}} lg={4}><Switch checked={this.state.ac}  id='ac' onChange={this.handleChange} /></Grid>
                     </Grid>
                     <Grid container item style={{}} >
-                        <Grid item style={{ marginTop: '1%' }} lg={8}><Typography variant='subheading' style={{ fontFamily: '"Titillium Web",sans-serif' }}>Property Rent</Typography>
+                        <Grid item style={{ marginTop: '1%'}} lg={8}><Typography variant='subheading' style={{ fontFamily: '"Titillium Web",sans-serif' }}>Property Rent</Typography>
                         </Grid>
-                        <Grid item >
-                        <Typography variant='subheading' style={{ fontFamily: '"Titillium Web",sans-serif', marginTop: '10%' }} variant='caption'>(Per Month)</Typography>
-                        </Grid>
-                        <Grid item lg={2}><TextField value={this.state.rent} id='rent' style={{ width: '80px' }}  onChange={this.handleChange} /></Grid>
+                        
+                        <Grid item lg={2}><TextField placeholder = 'Per Month' value={this.state.rent} id='rent' style={{ width: '80px' }}  onChange={this.handleChange} /></Grid>
                     </Grid>
                     <Grid container item style={{}}>
                         <Grid item style={{ marginTop: '1%' }} lg={8}><Typography variant='subheading' style={{ fontFamily: '"Titillium Web",sans-serif' }} variant='subheading'>How many Bedroooms?</Typography></Grid>
@@ -386,7 +383,7 @@ class SellerChild extends React.Component {
         }
         else if (this.state.pro === 10) {
             return (
-                <Grid container direction='column' spacing={24} item style={{ height: '600px' }}>
+                <Grid container direction='column' spacing={24} item style={{ height: '687px' }}>
                     <Grid item style={{ marginBottom: '3%', color: 'black', }}>
                         <Typography variant='display1' >Property Information:</Typography>
                     </Grid>
@@ -529,6 +526,7 @@ class SellerChild extends React.Component {
                         {this.loggedUser()}
                     </Grid>
                 </Grid>
+
 
             )
         }

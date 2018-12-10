@@ -43,7 +43,7 @@ const theme = createMuiTheme({
       main: '#e3f2fd',
     },
     secondary: {
-      main: '#fce4ec',
+      main: '#CE0000',
     },
   },
 
@@ -129,6 +129,7 @@ class DashBoard extends React.Component {
             </AppBar>
           </Grid>
           <Grid item style={{ marginTop: '4%' }}><SwipeableTextMobileStepper tutorialSteps={tutorialSteps} /></Grid>
+
           <ClippedDrawer accounts={this.state.accounts} properties={this.state.properties} images={this.props.images} />
 
         </Grid>

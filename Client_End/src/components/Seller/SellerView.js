@@ -29,9 +29,9 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(SellerServer.handleRegister(name, password, email, phoneNumber))
     },
     handleUser: (id) => { dispatch(SellerServer.handleUser(id)) },
-    handleOrder: (ownerid, lat, lan, fullAddres, propertyType, bedrooms, bathrooms, garage, ac, rent, MainImage, size) => {
+    handleOrder: (ownerid, lat, lan, fullAddres, propertyType, bedrooms, bathrooms, garage, ac, rent, MainImage, size , province, city) => {
       dispatch(SellerServer.handleProperty(ownerid, lat, lan, fullAddres, propertyType,
-        bedrooms, bathrooms, garage, ac, rent, MainImage, size))
+        bedrooms, bathrooms, garage, ac, rent, MainImage, size ,province,city ))
     }
   };
 
@@ -115,13 +115,13 @@ class SellerView extends Component {
     this.setState({ owner: props.owner })
   }
   handleProperty(lat, lan, fullAddress, propertyType, bedrooms, bathrooms,
-    garage, ac, name, password, email, phoneNumber, rent, isUserAvailable, MainImage, size, city, province, ) {
-
+    garage, ac, name, password, email, phoneNumber, rent, isUserAvailable, MainImage, size, province, city ) {
+    
     this.setState({
       lat: lat, lan: lan, fullAddres: fullAddress, PropertyType: propertyType
       , Bedroooms: bedrooms, bahtrooms: bathrooms, garage: garage, ac: ac, name: name,
       Password: password, Email: email, phoneNumber: phoneNumber, rent: rent, MainImage: MainImage, size: size,
-      city: city, province, province
+      city: city, province: province
     })
 
     if (isUserAvailable === true) {

@@ -107,12 +107,17 @@ class ClippedDrawer extends React.Component {
             selcectedProperty: '', properties: this.props.properties,
             accounts: this.props.accounts, city: '', province: '', cities: [],
             selectedCity: '', selectedMinPrice : '', selectedMaxPrice: '',
-            selectedPropertyType : '', selectedMinMarla : '' , selectedMaxPrice : ''
+            selectedPropertyType : '', selectedMinMarla : '' , selectedMaxMarla : '',
+            propertiesCopy : this.props.properties
 
         };
         this.handleSelect = this.handleSelect.bind(this);
         this.changePAge = this.changePAge.bind(this);
         this.handleAddress = this.handleAddress.bind(this);
+        this.changeMinPrice = this.changeMinPrice.bind(this);
+        this.changeMaxPrice = this.changeMaxPrice.bind(this);
+        this.changeMinMarla = this.changeMinMarla.bind(this);
+        this.changeMaxMarla = this.changeMaxMarla.bind(this);
         this.filter = this.filter.bind(this);
     }
 
@@ -155,13 +160,70 @@ class ClippedDrawer extends React.Component {
     handleChange = (event, value) => {
         this.setState({ value });
     };
+    changeMinPrice(event) {
+        this.setState({selectedMinPrice : event.target.value})
+    }
+    changeMaxPrice(event) {
+        this.setState({selectedMaxPrice : event.target.value})
+    }
+    changeMinMarla(event) {
+        this.setState({selectedMinMarla : event.target.value})
+    }
+    changeMaxMarla(event) {
+        this.setState({selectedMaxMarla : event.target.value})
+    }
     filter(){
-        var entities = []
-        var values = []
-        for (var i =0 ; i < this.state.properties.length; ++i){
-            console.log(this.state.properties[i])
+        this.setState({propertiesCopy : this.state.properties})
+        
+        var filteredProperties = []
 
+        for (var i =0 ; i < this.state.properties.length; ++i){
+            var fulfilled = true;
+
+            if (this.state.city != ''){
+                if (this.state.properties[i].City != this.state.city){
+                    fulfilled = false;
+                   
+                }
+            }
+            if (this.state.PropertyType != ''){
+                if (this.state.properties[i].PropertyType != this.state.PropertyType){
+                    fulfilled = false;
+                }
+            }
+            
+            if (this.state.selectedMinPrice != ''){
+                if ( this.state.selectedMinPrice <= this.state.properties[i].rent && 
+                    this.state.properties[i].rent <= this.state.selectedMaxPrice){
+                        
+                }
+                else{
+                    fulfilled = false;
+                }
+                
+            }
+            if (this.state.selectedMinMarla != '' ){
+                
+                if ( this.state.selectedMinMarla <= this.state.properties[i].Area  && 
+                    this.state.properties[i].Area <= this.state.selectedMaxMarla){
+                    
+                }else{
+                    fulfilled = false;
+                }
+                
+
+            }
+            
+            if (fulfilled)
+            {
+                filteredProperties.push(this.state.properties[i])
+            }
         }
+
+
+
+        this.setState({propertiesCopy : filteredProperties})
+        
 
     }
     render() {
@@ -350,11 +412,14 @@ class ClippedDrawer extends React.Component {
                                         placeholder="Min Price"
                                         label="Min Price"
                                         className={classes.textForm}
+                                        onChange = {this.changeMinPrice}
                                     />
                                     - <TextField
                                         placeholder="Max Price"
                                         label="Max Price"
                                         className={classes.textForm}
+                                        onChange = {this.changeMaxPrice}
+                                        
                                     />
                                 </Grid>
                             </Grid>
@@ -386,11 +451,13 @@ class ClippedDrawer extends React.Component {
                                         placeholder="Min Marla"
                                         label="Min Marla"
                                         className={classes.textForm}
+                                        onChange = {this.changeMinMarla}
                                     />
                                     - <TextField
                                         placeholder="Max Marla"
                                         label="Max Marla"
                                         className={classes.textForm}
+                                        onChange = {this.changeMaxMarla}
                                     />
                                 </Grid>
                             </Grid>
@@ -425,7 +492,7 @@ class ClippedDrawer extends React.Component {
                                 <Tab icon={<LocationOnIcon />} />
                                 <Tab icon={<img src={require('../Images/details.png')} color='secondary' style={{ width: '20px', height: '20px' }} />} />
                             </Tabs>
-                            {value == 0 && <ImgMediaCard rows={this.state.properties}
+                            {value == 0 && <ImgMediaCard rows={this.state.propertiesCopy}
                                 changePAge={this.changePAge} images={this.props.images} />}
                             {value == 1 && <MapsParent data={this.state.properties} />}
                             {value == 2 && <Details sellectedOwner={this.state.sellectedOwner}

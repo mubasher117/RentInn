@@ -119,10 +119,9 @@ class MapsParent extends React.Component {
         return (
 
             <Grid container direction='column' lg={12} sm={8} style={{ margin: '4%' }} style={{height:'600px'}}>
-                <Grid item>
-                    <Typography variant='headline'>Properties Available For Rent:</Typography></Grid>
+                
                 <Grid item lg={2} sm={8} style={{ margin: '4%' }}>
-                    <Grid item style={{ marginBottom: '34%' }}><Typography variant='headline'>Location:</Typography></Grid>
+                    <Grid item style={{ marginBottom: '17%', minWidth : '800px' , fontFamily : 'cursive' }}><Typography variant='headline'>Location of Properties Available For Rent:</Typography></Grid>
                     <Grid item >
                         {this.handleMap()}
                     </Grid>

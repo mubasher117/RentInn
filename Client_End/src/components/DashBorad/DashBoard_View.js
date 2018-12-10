@@ -52,7 +52,6 @@ class LoginView extends Component {
   }
   componentDidMount() {
     this.props.handleAllProperties();
-
   }
   componentWillReceiveProps(ownerIdProps) {
     this.setState({ accounts: ownerIdProps.accounts, properties: ownerIdProps.properties })
