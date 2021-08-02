@@ -189,7 +189,7 @@ class Footer extends React.Component {
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid container item direction='column' lg={4} spacing={16}>
+                        <Grid container item direction='column' lg={4} spacing={12}>
                             <Grid item style={{ marginLeft: '6%' }}>
                                 <Typography style={{ color: 'white' }}> <b>About Us:</b></Typography>
 
