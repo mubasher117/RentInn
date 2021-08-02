@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { withStyles } from '@material-ui/core/styles';
 import { Tabs, Tab, Select, MenuItem, Switch, Toolbar, Divider, AppBar, Button, Typography, TextField, FormControlLabel, Paper } from '@material-ui/core';
-import { Line, Circle } from 'rc-progress';
+
 import { linkSync } from 'fs';
 import h2 from '../Images/h2.jpeg'
 import Footer from './footer.js'
@@ -580,7 +580,7 @@ class SellerChild extends React.Component {
 
                         <Grid container item spacing={16}>
                             <Grid item style={{ marginTop: '10%' }} lg={4}>
-                                <Line color='#02bec4' percent={this.state.progressValue} strokeWidth='3' trailWidth='3' strokeColor='#0284a8' style={{ color: '#02bec4', height: '60%' }} />
+                                <div>TEMP</div>
                             </Grid>
                             {this.handleQuestion()}
                             <Grid item style={{ marginLeft: '2%', marginBottom: '5%' }}>

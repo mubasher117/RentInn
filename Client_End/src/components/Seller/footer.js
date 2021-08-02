@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { withStyles } from '@material-ui/core/styles';
 import { Tabs, Tab, Select, MenuItem, Switch, Divider, AppBar, Button, Typography, TextField, Paper } from '@material-ui/core';
-import { Line, Circle } from 'rc-progress';
+
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import MailOutlineRounded from '@material-ui/icons/MailOutlineRounded'
 import Call from '@material-ui/icons/Call';

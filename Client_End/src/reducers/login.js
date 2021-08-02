@@ -2,7 +2,7 @@ import { login_Actions } from '../constants/Login'
 import { login_Status } from '../constants/Login'
 
 const login_initialState = {
-  login_status: login_Status.login_SignIn.NEW,
+  login_status: login_Status.login_SignIn.HOME,
   accounts: '',
   properties: []
 };
