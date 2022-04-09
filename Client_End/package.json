@@ -13,7 +13,7 @@
     "material-design-icons": "^3.0.1",
     "material-ui": "^0.20.1",
     "material-ui-image": "^3.0.0",
-    "moment": "^2.22.2",
+    "moment": "^2.29.2",
     "nodemailer": "^4.6.8",
     "react": "^16.4.1",
     "react-combo-select": "^1.3.18",
